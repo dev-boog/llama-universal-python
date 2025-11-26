@@ -1,0 +1,90 @@
+.custom-navbar {
+    background-color: #141414ec !important;
+    border-bottom: 1px solid #383838 !important;
+    margin-bottom: 20px;
+
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+}
+.custom-navbar-title a{
+    font-size: 28px;
+    font-weight: 600;
+    margin-right: 50px;
+    color: white !important;
+    text-decoration: none !important;
+}
+.nav-link {
+    font-weight: 500 !important;
+    color:rgb(255, 255, 255) !important;
+}
+.active {
+    color: rgb(168, 247, 158) !important;
+}
+
+
+.alert-custom {
+    background-color: #141414ec !important;
+    border: 1px solid #383838 !important;
+} 
+
+.custom-info-card {
+    position: relative;
+    overflow: hidden;
+    background-color: #141414ec !important;
+    border: 1px solid #383838 !important;
+    border-radius: 6px;
+    color: white;
+    min-width: 280px;
+    transition: all 0.25s ease-in-out;
+}
+.custom-info-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.08) 50%,  /* lower opacity */
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+}
+.custom-info-card:hover::before {
+    left: 125%;
+    transition: left 0.75s ease-in-out;
+}
+.custom-info-card:hover {
+    transform: translateY(-6px);
+    border-color: #383838;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 0, 0, 0.046);
+}
+.card-img-top {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    object-position: center;
+}
+.card-title {
+    font-size: 20px;
+    margin-bottom: 0px;
+}
+.card-text {
+    font-size: 13px;
+    color: #8f8f8f;
+}
+.card-btn {
+    background-color: rgb(255, 202, 96) !important;
+}
+
+.custom-input {
+    background-color: #272727ec !important;
+    border: 1px solid #383838 !important;
+    border-radius: 6px;
+    color: white !important;
+}
+.custom-input::placeholder {
+   color: #a7a7a7 !important;
+}
