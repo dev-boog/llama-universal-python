@@ -11,6 +11,7 @@ app = Flask(__name__)
 def update():
     data = request.get_json()
 
+    Recoil.mode = str(data.get("mode", Recoil.mode))
     Recoil.enabled = bool(data.get("enabled", Recoil.enabled))
     Recoil.x = float(data.get("x", Recoil.x))
     Recoil.y = float(data.get("y", Recoil.y))
@@ -18,20 +19,46 @@ def update():
 
     return jsonify({
         "status": "success",
+        "mode": Recoil.mode,
         "enabled": Recoil.enabled,
         "x": Recoil.x,
         "y": Recoil.y,
         "delay": Recoil.delay
     })
 
+@app.route('/update_pattern', methods=['POST'])
+def update_pattern():
+    data = request.get_json()
+    
+    Recoil.pattern_enabled = bool(data.get("pattern_enabled", Recoil.pattern_enabled))
+    
+    # Parse pattern from list of objects [{x: 0, y: 3}, {x: 1, y: 3}, ...]
+    pattern_data = data.get("pattern", [])
+    Recoil.pattern = [(float(item['x']), float(item['y'])) for item in pattern_data]
+    
+    return jsonify({
+        "status": "success",
+        "pattern_enabled": Recoil.pattern_enabled,
+        "pattern": [{"x": x, "y": y} for x, y in Recoil.pattern]
+    })
+
+@app.route('/get_pattern', methods=['GET'])
+def get_pattern():
+    return jsonify({
+        "pattern_enabled": Recoil.pattern_enabled,
+        "pattern": [{"x": x, "y": y} for x, y in Recoil.pattern]
+    })
 
 @app.route('/')
 def index():
     return render_template('index.html',
+        mode = Recoil.mode,
         enabled = Recoil.enabled,
         x = Recoil.x,
         y = Recoil.y,
-        delay = Recoil.delay
+        delay = Recoil.delay,
+        pattern_enabled = Recoil.pattern_enabled,
+        pattern = [{"x": x, "y": y} for x, y in Recoil.pattern]
     )
 
 def makcu_loop():

@@ -5,3 +5,33 @@ body {
     background-color: #1a1a1a !important; 
     font-size: 14px;
 }
+
+#patternList {
+    max-height: 200px;
+    overflow-y: auto;
+}
+.pattern-item {
+    background-color: #272727ec;
+    border: 1px solid #383838;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.pattern-item-text {
+    font-size: 14px;
+    color: #fff;
+}
+.pattern-item-remove {
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 4px;
+}
+.pattern-item-remove:hover {
+    color: #ff5252;
+}

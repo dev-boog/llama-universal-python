@@ -12,7 +12,6 @@
 </head>
 
 <body>
-    <!-- Navbar -->
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark custom-navbar">
         <div class="container-fluid">
             <p class="custom-navbar-title mb-0"><a href="{{ url_for('index') }}">Llama</a></p>
@@ -27,37 +26,96 @@
         </div>
     </nav>
 
-    <!-- Main content -->
-    <section>
-        <div class="container mt-3">
-            <div class="alert alert-custom alert-dismissible">
-                <strong>👋 Hey!</strong> Please consider joining our <a href="#" class="alert-link">Discord Server</a> to watch out for giveaways & updates!
-            </div>
+    <div class="container mt-3">
+        <div class="alert alert-custom alert-dismissible">
+            <strong>👋 Hey!</strong> Please consider joining our <a href="#" class="alert-link">Discord Server</a> to watch out for giveaways & updates!
         </div>
-
+    </div>
+    
+    <section>
         <div class="container">
             <div class="row g-2">
                 <div class="col">
                     <div class="card h-100 custom-info-card w-100 text-white">
                         <div class="card-body">
-                            <h5 class="card-title">Recoil</h5>
-                            <p class="card-text">Toggle the basic recoil options.</p>
+                            <h5 class="card-title">Recoil Control</h5>
+                            <p class="card-text">Configure your recoil settings.</p>
                             <hr>
-                            <div class="form-check">
-                                <input class="form-check-input custom-input" type="checkbox" value="" id="checkDefault">
-                                <label class="form-check-label" for="checkDefault">Enable</label>
+                            
+                            <div class="form-check mb-3">
+                                <input class="form-check-input custom-input" type="checkbox" value="" id="checkDefault" {% if enabled %}checked{% endif %}>
+                                <label class="form-check-label" for="checkDefault">Enable Recoil</label>
                             </div>
 
-                            <input type="text" class="form-control mt-2 custom-input" id="x_cont_val" placeholder="X Control (4)">
-                            <input type="text" class="form-control mt-2 custom-input" id="y_cont_val" placeholder="Y Control (3)">
-                            <input type="text" class="form-control mt-2 custom-input" id="delay" placeholder="Delay">
-                            <button class="btn btn-success mt-2 w-100"> Apply</button>
+                            <label for="recoil_mode" class="card-text">Recoil Mode</label>
+                            <select class="form-select custom-input mb-3" id="recoil_mode" name="recoil_mode">
+                                <option value="Simple" {% if mode == "Simple" %}selected{% endif %}>Simple</option>
+                                <option value="Advanced" {% if mode == "Advanced" %}selected{% endif %}>Advanced</option>
+                            </select>
+
+                            <label for="delay" class="card-text">Delay (Seconds)</label>
+                            <input type="text" class="form-control custom-input" id="delay" placeholder="Delay" value="{{ delay }}">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <section id="simpleSection">
+        <div class="container mt-3">
+            <div class="row g-2">
+                <div class="col">
+                    <div class="card h-100 custom-info-card w-100 text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Simple Recoil</h5>
+                            <p class="card-text">Set static X and Y recoil values.</p>
+                            <hr>
+                            
+                            <label for="x_cont_val" class="card-text">X Control</label>
+                            <input type="text" class="form-control custom-input mb-2" id="x_cont_val" placeholder="X Control (4)" value="{{ x }}">
+                            
+                            <label for="y_cont_val" class="card-text">Y Control</label>
+                            <input type="text" class="form-control custom-input mb-3" id="y_cont_val" placeholder="Y Control (3)" value="{{ y }}">
+                            
+                            <button class="btn btn-success w-100" id="applySimple">Apply Simple Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="advancedSection">
+        <div class="container mt-3">
+            <div class="row g-2">
+                <div class="col">
+                    <div class="card h-100 custom-info-card w-100 text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Advanced Recoil Pattern</h5>
+                            <p class="card-text">Create a custom recoil pattern that cycles through steps.</p>
+                            <hr>
+
+                            <div class="mt-3">
+                                <label class="form-label card-text">Pattern Steps:</label>
+                                <div id="patternList" class="mb-2">
+                                    
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control custom-input mx-1" id="newX" placeholder="X">
+                                    <input type="text" class="form-control custom-input mx-1" id="newY" placeholder="Y">
+                                    <button class="btn btn-success mx-1" id="addPattern">Add</button>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-success mt-3 w-100" id="applyAdvanced">Apply Advanced Pattern</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 </html>
