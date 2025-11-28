@@ -35,3 +35,10 @@ body {
 .pattern-item-remove:hover {
     color: #ff5252;
 }
+
+.pattern-container {
+    background-color: #0f0f0f !important;
+    border: 1px solid #383838 !important;
+    border-radius: 6px;
+    color: white;
+}

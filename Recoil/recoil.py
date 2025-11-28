@@ -59,6 +59,8 @@ class Recoil:
             if Recoil.mode == "Advanced" and Recoil.pattern_enabled and Recoil.pattern:
                 if Recoil.ShotCount < len(Recoil.pattern):
                     x_val, y_val = Recoil.pattern[Recoil.ShotCount]
+                    x_val *= 1.2
+                    y_val *= 1.2 
                     Recoil.move_mouse_smoothly(x_val, y_val, duration=Recoil.delay)
                     Recoil.ShotCount += 1       
             elif Recoil.mode == "Simple":

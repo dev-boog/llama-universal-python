@@ -4,8 +4,55 @@ from Recoil.recoil import Recoil
 from flask import Flask, render_template, request, jsonify
 import time
 import threading
+import json
+import os
 
 app = Flask(__name__)
+PATTERN_FILE = "SavedPatterns.json"
+
+# Save current pattern to file
+@app.route('/save_pattern', methods=['POST'])
+def save_pattern():
+    data = request.get_json()
+    pattern_name = data.get("name", "default")
+
+    # Load existing saved patterns
+    if os.path.exists(PATTERN_FILE):
+        with open(PATTERN_FILE, "r") as f:
+            saved_patterns = json.load(f)
+    else:
+        saved_patterns = {}
+
+    # Convert tuples to dicts for JSON
+    saved_patterns[pattern_name] = [{"x": x, "y": y} for x, y in Recoil.pattern]
+
+    # Save to file
+    with open(PATTERN_FILE, "w") as f:
+        json.dump(saved_patterns, f, indent=4)
+
+    return jsonify({"status": "success", "saved_pattern": pattern_name})
+
+
+
+# Load a saved pattern
+@app.route('/load_pattern', methods=['POST'])
+def load_pattern():
+    data = request.get_json()
+    pattern_name = data.get("name", "default")
+
+    if not os.path.exists(PATTERN_FILE):
+        return jsonify({"status": "error", "message": "No saved patterns found"}), 404
+
+    with open(PATTERN_FILE, "r") as f:
+        saved_patterns = json.load(f)
+
+    if pattern_name not in saved_patterns:
+        return jsonify({"status": "error", "message": "Pattern not found"}), 404
+
+    Recoil.pattern = [(item['x'], item['y']) for item in saved_patterns[pattern_name]]
+    Recoil.pattern_enabled = True
+
+    return jsonify({"status": "success", "pattern": saved_patterns[pattern_name]})
 
 @app.route('/update', methods=['POST'])
 def update():
@@ -32,7 +79,6 @@ def update_pattern():
     
     Recoil.pattern_enabled = bool(data.get("pattern_enabled", Recoil.pattern_enabled))
     
-    # Parse pattern from list of objects [{x: 0, y: 3}, {x: 1, y: 3}, ...]
     pattern_data = data.get("pattern", [])
     Recoil.pattern = [(float(item['x']), float(item['y'])) for item in pattern_data]
     
