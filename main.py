@@ -16,25 +16,20 @@ def save_pattern():
     data = request.get_json()
     pattern_name = data.get("name", "default")
 
-    # Load existing saved patterns
     if os.path.exists(PATTERN_FILE):
         with open(PATTERN_FILE, "r") as f:
             saved_patterns = json.load(f)
     else:
         saved_patterns = {}
 
-    # Convert tuples to dicts for JSON
     saved_patterns[pattern_name] = [{"x": x, "y": y} for x, y in Recoil.pattern]
 
-    # Save to file
     with open(PATTERN_FILE, "w") as f:
         json.dump(saved_patterns, f, indent=4)
 
     return jsonify({"status": "success", "saved_pattern": pattern_name})
 
 
-
-# Load a saved pattern
 @app.route('/load_pattern', methods=['POST'])
 def load_pattern():
     data = request.get_json()

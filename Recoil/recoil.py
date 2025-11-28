@@ -52,7 +52,6 @@ class Recoil:
 
             time.sleep(duration / steps)
 
-    # --- RECOIL LOOP ---
     @staticmethod
     def RecoilLoop():
         if Makcu.GetButtonState("RMB") and Makcu.GetButtonState("LMB") and Recoil.enabled:
