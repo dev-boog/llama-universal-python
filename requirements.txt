@@ -10,4 +10,3 @@ MarkupSafe==3.0.3
 pyserial==3.5
 PyYAML==6.0.3
 Werkzeug==3.1.3
-
