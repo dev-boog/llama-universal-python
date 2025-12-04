@@ -2,6 +2,20 @@ import os
 import sys
 import subprocess
 import logging
+from io import StringIO
+
+from flask import Flask, render_template, request
+from routes.control import control_bp
+from routes.custom_patterns import patterns_bp
+
+from colorama import init, Fore, Style
+init(autoreset=True) 
+
+from Makcu.makcu import Makcu
+from Recoil.recoil import Recoil
+import threading
+import time
+import socket
 
 def install_requirements():
     """Auto-install missing packages from requirements.txt"""
@@ -19,19 +33,6 @@ logging.getLogger("werkzeug").handlers.clear()
 logging.getLogger("werkzeug").addHandler(logging.NullHandler())
 logging.getLogger("werkzeug").setLevel(logging.CRITICAL + 1)
 logging.getLogger("werkzeug").propagate = False
-
-from flask import Flask, render_template
-from routes.control import control_bp
-from routes.custom_patterns import patterns_bp
-
-from colorama import init, Fore, Style
-init(autoreset=True) 
-
-from Makcu.makcu import Makcu
-from Recoil.recoil import Recoil
-import threading
-import time
-import socket
 
 def get_local_ip():
     try:
@@ -70,6 +71,12 @@ def create_app():
             pattern_enabled=Recoil.pattern_enabled,
             pattern=[{"x": x, "y": y} for x, y in Recoil.pattern]
         )
+    
+    @app.route('/shutdown')
+    def shutdown_app():
+        os.kill(os.getpid(), 9)
+
+
     return app
 
 def makcu_loop():
@@ -84,9 +91,6 @@ def makcu_loop():
             Makcu.Disconnect()
 
 if __name__ == "__main__":
-    import sys
-    from io import StringIO
-
     threading.Thread(target=makcu_loop, daemon=True).start()
     app = create_app()
 
